@@ -52,11 +52,11 @@ end
 store = CoreDataStore.new('../ios/resources/Golftracker.sqlite', '../ios/resources/Golftracker.momd/0.0.1.mom')
 
 
-res = Net::HTTP.get(URI.parse('http://lvh.me:3000/courses.json'))
+res = Net::HTTP.get(URI.parse('http://simplegolfleague.com/courses.json'))
 JSON.parse(res).each do |c|
   holes = []
   c["holes"].each do |hole|
-    holes << store.create_entity("Hole", {'id' => hole["id"], 'course_id' => hole["course_id"],  'hcp' => hole["hcp"], 'nr' => hole["nr"], 'par' => hole["par"], 'length' => hole["length"]})
+    holes << store.create_entity("Hole", {'id' => hole["id"], 'course_id' => hole["course_id"],  'hcp' => hole["hcp"], 'nr' => hole["nr"], 'par' => hole["par"], 'length' => hole["length"], 'lat' => hole["lat"], 'lng' => hole["lng"]})
   end
   updated = OSX::NSDate.dateWithNaturalLanguageString(c["updated_at"])
   course = store.create_entity('Course', {'id' => c["id"], 'name' => c["name"], 'par' => c["par"], 'holes_count' => c["holes_count"], 'updated_at' => updated }, {'holes' => holes})
